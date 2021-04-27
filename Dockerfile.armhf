@@ -5,7 +5,7 @@ COPY root/ /
 
 ARG VERSION
 RUN apk add --no-cache curl libcap nss-tools fail2ban \
-    && curl -fsSL "https://github.com/caddyserver/caddy/releases/download/${VERSION}/caddy_${VERSION#v}_linux_armv7.tar.gz" | tar xzf - -C "/usr/local/bin" \
+    && curl -fsSL "https://github.com/caddyserver/caddy/releases/download/${VERSION#mod*-}/caddy_${VERSION#mod*-v}_linux_armv7.tar.gz" | tar xzf - -C "/usr/local/bin" \
     && chmod a+x /usr/local/bin/caddy \
     && setcap cap_net_bind_service=+ep /usr/local/bin/caddy \
     && cp -r /etc/fail2ban /defaults/fail2ban \
