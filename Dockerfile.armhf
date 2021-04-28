@@ -10,7 +10,7 @@ RUN apk add --no-cache curl libcap nss-tools fail2ban \
     && setcap cap_net_bind_service=+ep /usr/local/bin/caddy \
     && cp -r /etc/fail2ban /defaults/fail2ban \
     && rm -rf /etc/fail2ban \
-    && ln -s "${CONFIG_DIR}/fail2ban" "/etc/fail2ban"
+    && ln -s "/config/fail2ban" "/etc/fail2ban"
 
 # set home for the user (acme needs this)
 ENV HOME /config
