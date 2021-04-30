@@ -26,5 +26,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           github_repo: ${{ github.repository }}
+          git_commit_sha: ${{ github.sha }}
           version: ${{ steps.caddy_release.outputs.release }}
           git_tag_prefix: "mod000-"
