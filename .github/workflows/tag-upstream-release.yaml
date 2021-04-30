@@ -1,0 +1,30 @@
+name: Tag upstream
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '33 3 * * *'
+jobs:
+  tag_upstream_release:
+    name: Tag latest upstream release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get latest local tag
+        id: local_release
+        uses: jimschubert/query-tag-action@v1
+      - name: Get latest upstream release tag
+        uses: rez0n/actions-github-release@main
+        id: caddy_release
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: caddyserver/caddy
+          type: stable
+      - name: Tag release if new
+        uses: pkgdeps/git-tag-action@v2
+        if: ${{ !contains(steps.caddy_release.outputs.release, steps.local_release.outputs.tag) }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_repo: ${{ github.repository }}
+          version: ${{ steps.caddy_release.outputs.release }}
+          git_tag_prefix: "mod000-"
