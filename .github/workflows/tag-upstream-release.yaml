@@ -26,4 +26,4 @@ jobs:
         uses: actions-ecosystem/action-push-tag@v1 
         if: ${{ !contains(steps.local_release.outputs.tag, steps.caddy_release.outputs.release) }}
         with:
-          tag: mod000-${{ steps.caddy_release.outputs.release }}
+          tag: ${{ steps.caddy_release.outputs.release }}-mod000
