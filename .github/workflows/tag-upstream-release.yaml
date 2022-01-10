@@ -16,7 +16,7 @@ jobs:
         id: local_release
         uses: actions-ecosystem/action-get-latest-tag@v1
       - name: Get latest upstream release tag
-        uses: rez0n/actions-github-release@main
+        uses: rez0n/actions-github-release@v1.5
         id: caddy_release
         env:
           token: ${{ secrets.GITHUB_TOKEN }}
