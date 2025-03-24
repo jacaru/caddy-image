@@ -11,4 +11,4 @@ mkdir -p \
 	cp /defaults/Caddyfile /config/Caddyfile
 
 # permissions
-chown -R abc:abc /config
+lsiown -R abc:abc /config
