@@ -1,19 +1,24 @@
+ARG VERSION=2
+FROM caddy:${VERSION#v}-builder AS builder
+
+RUN xcaddy build \
+    --with github.com/lucaslorentz/caddy-docker-proxy/v2
+
 FROM lsiobase/alpine:arm64v8-3.21
 
 # copy local files
 COPY root/ /
 
-ARG VERSION
+COPY --from=builder /usr/bin/caddy /usr/local/bin/caddy
+
 RUN apk add --no-cache curl libcap nss-tools fail2ban \
-    && curl -fsSL "https://github.com/caddyserver/caddy/releases/download/${VERSION}/caddy_${VERSION#v}_linux_arm64.tar.gz" | tar xzf - -C "/usr/local/bin" \
     && chmod a+x /usr/local/bin/caddy \
     && setcap cap_net_bind_service=+ep /usr/local/bin/caddy \
     && cp -r /etc/fail2ban /defaults/fail2ban \
-    && rm -rf /etc/fail2ban \
-    && ln -s "/config/fail2ban" "/etc/fail2ban"
+    && rm -rf /etc/fail2ban
 
 # set home for the user (acme needs this)
-ENV HOME /config
+ENV HOME=/config
 
 # ports and volumes
 EXPOSE 80 443
